@@ -1,0 +1,160 @@
+{% load custom_filters %}
+{% load static %}
+{% csrf_token %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block tittle %}{% endblock tittle %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+
+  {% block links %}
+  {% endblock links %}
+  
+</head>
+<body>
+  <!-- Навигационное меню для Desktop-->
+  <nav id="navbar-desktop" class="navbar navbar-expand-lg navbar-light bg-light shadow-sm py-3">
+    <div class="container">
+      <!-- Лого -->
+      <a class="navbar-brand" href="#">
+        <img src="https://via.placeholder.com/50" alt="Лого" width="50" height="50" class="d-inline-block align-text-top img-fluid">
+      </a>
+
+      <!-- Весь контент навбара -->
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <!-- Кнопка "Каталог" с выпадающим списком -->
+      <div class="dropdown me-3">
+        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          Каталог
+        </a>
+      
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li><a class="dropdown-item" href="{% url 'shop:product_list' %}">Все товары</a></li>
+          {% for category in categories_objects %}
+            <li><a class="dropdown-item" href="{% url 'shop:product_list_by_category' category.slug %}">{{ category.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+
+
+        <!-- Поле поиска -->
+        <form class="d-flex flex-grow-1 me-3" method="get" action="{% url 'shop:product_search' %}" style="margin-top: 17px;">
+          <input class="form-control me-2" type="search" name="q" placeholder="Поиск товаров..." aria-label="Search" style="min-width: 150px;">
+          <button class="btn btn-primary" type="submit">Поиск</button>
+        </form>
+
+
+
+
+        <!-- Кнопка корзины -->
+        <div class="d-flex justify-content-end">
+          <div class="cart">
+            {% with total_items=cart|length %}
+              <a href="{% url 'cart:cart_detail' %}" class="btn btn-primary d-flex align-items-center" id="cart-link">
+                <i class="fas fa-shopping-cart fa-2x me-2"></i>
+                <div class="d-none d-lg-block">
+                  {% if total_items == 1 %}
+                    <span id="cart-total-items">{{ total_items }}</span> товар
+                  {% elif total_items > 1 and total_items < 5 %}
+                    <span id="cart-total-items">{{ total_items }}</span> товара
+                  {% else %}
+                    <span id="cart-total-items">{{ total_items }}</span> товаров
+                  {% endif %}
+                  <br>
+                  <span class="d-block"><span id="cart-total-price">{{ cart.get_total_price |price_format}} </span>₸</span>
+                </div>
+              </a>
+
+            {% endwith %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+
+
+
+
+  
+  <!-- Навигационное меню для Mobile -->
+  <nav id="navbar-mobile" class="navbar navbar-expand-lg navbar-light bg-light shadow-sm py-3">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+
+      <!-- Мобильное меню -->
+
+      <!-- Кнопка "Каталог" с выпадающим списком -->
+      <div class="dropdown me-3">
+        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          Каталог
+        </a>
+
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <!-- Ссылка для отображения всех товаров -->
+          <li><a class="dropdown-item" href="{% url 'shop:product_list' %}">Все товары</a></li>
+          
+          <!-- Перебор всех категорий и создание ссылок -->
+          {% for category in categories_objects %}
+            <li><a class="dropdown-item" href="{% url 'shop:product_list_by_category' category.slug %}">{{ category.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+
+
+      <!-- Лого -->
+      <a class="navbar-brand" href="#">
+        <img src="https://via.placeholder.com/50" alt="Лого" width="50" height="50" class="img-fluid">
+      </a>
+  
+      <!-- Кнопка корзины -->
+      <div class="cart d-flex align-items-center position-relative">
+        <a href="{% url 'cart:cart_detail' %}" class="btn btn-primary d-flex align-items-center position-relative" id="cart-link">
+            <i class="fas fa-shopping-cart fa-2x"></i>
+            <span id="cart-total-items-new" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {% with total_items=cart|length %} {{ total_items }} {% endwith %}
+            </span>
+        </a>
+      </div>
+
+
+  
+    <!-- Поле поиска -->
+    <div class="container mt-3 search-form" >
+      <form class="d-flex flex-grow-1 me-3" method="get" action="{% url 'shop:product_list' %}" style="margin-top: 17px;">
+        <input class="form-control me-2" type="search" name="q" placeholder="Поиск товаров..." aria-label="Search" style="min-width: 150px;">
+        <button class="btn btn-primary" type="submit">Поиск</button>
+      </form>
+    </div>
+  
+
+    
+  </nav>
+  
+  {% block content %}
+  {% endblock content %}
+<!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+  
+
+  {% comment %} <script src="{% static 'endless-pagination/js/module.endless.js' %}"></script>
+  <script src="{% static 'endless-pagination/js/endless-pagination.js' %}"></script> {% endcomment %}
+
+</body>
+</html>

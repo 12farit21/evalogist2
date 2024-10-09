@@ -1,0 +1,290 @@
+.link-hover:hover {
+  color: blue;
+}
+.offcanvas-header {
+  background-color: #f8f9fa; /* светлый фон для заголовка */
+  border-bottom: 1px solid #dee2e6;
+}
+
+.offcanvas-body {
+  background-color: #fff;
+  color: #212529; /* черный текст */
+  font-size: 1.1rem;
+  padding: 20px;
+}
+
+.offcanvas-title {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.btn-close {
+  background-color: #6c757d;
+  border-radius: 50%;
+  padding: 8px;
+}
+
+.btn-close:hover {
+  background-color: #495057;
+}
+
+/* Увеличиваем ширину модального окна */
+.offcanvas.offcanvas-end {
+  width: 600px; /* Укажите нужную ширину (например, 600px) */
+}
+
+
+.custom-img {
+  width: 100%; /* Ширина 100% от родительского контейнера */
+  height: 500px; /* Фиксированная высота */
+  object-fit: contain; /* Изображение масштабируется, чтобы поместиться в контейнер без обрезки */
+  object-position: center; /* Центрирование изображения */
+  background-color: #f8f9fa; /* Фон вокруг изображения для несоответствующих по размеру картинок */
+}
+
+
+
+.custom-offcanvas {
+  background-color: #f8f9fa;
+  border-radius: 15px 0 0 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  transition: all 0.3s ease-in-out;
+  max-width: 600px;
+}
+
+.offcanvas-header {
+  background-color: #ffffff;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.offcanvas-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #343a40;
+}
+
+.custom-carousel .carousel-inner {
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.custom-img:hover {
+  transform: scale(1.02);
+}
+
+.video-container video {
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.item-description {
+  font-size: 1.2rem;
+  color: #495057;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.item-price {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.custom-btn {
+  background-color: #0d6efd;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+  transition: all 0.3s ease;
+  border-radius: 50%;
+}
+
+.custom-btn:hover {
+  background-color: #0a58ca;
+  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.6);
+  transform: scale(1.1);
+}
+
+
+
+.custom-prev-icon i,
+.custom-next-icon i {
+    font-size: 40px; /* Размер иконок */
+    color: rgba(0, 0, 0, 0.7); /* Темный цвет иконок */
+    transition: color 0.3s ease;
+}
+
+.custom-prev-icon i:hover,
+.custom-next-icon i:hover {
+    color: rgba(0, 0, 0, 0.9); /* Более темный цвет при наведении */
+}
+
+.carousel-indicators button {
+  
+  transition: background-color 0.3s ease; /* Плавная анимация изменения цвета */
+}
+
+.carousel-indicators .active {
+  background-color: rgba(0, 0, 0, 0.9); /* Более темный цвет для активного индикатора */
+
+}
+
+/* Основные стили для кнопок */
+.btn-primary {
+  background-color: #003366; /* Темно-синий цвет */
+  border-color: #003366;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #002244; /* Более тёмный оттенок для hover */
+  border-color: #002244;
+}
+
+/* Стили для навигации */
+.navbar {
+  background-color: #f8f9fa; /* Светло-серый фон */
+  border-bottom: 2px solid #e3e6f0;
+}
+
+.navbar .navbar-brand img {
+  border-radius: 50%;
+}
+
+/* Стили для поля поиска */
+.form-control {
+  border-radius: 5px;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #003366; /* Тёмно-синий акцент */
+}
+
+/* Стили для выпадающего меню */
+.dropdown-menu {
+  border-radius: 5px;
+  border: 1px solid #e3e6f0;
+}
+
+.dropdown-item:hover {
+  background-color: #003366;
+  color: white;
+}
+
+/* Стили для корзины */
+#cart-link {
+  background-color: #003366;
+  color: white;
+  border-radius: 5px;
+}
+
+#cart-link:hover {
+  background-color: #002244;
+}
+
+#cart-total-items {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Основные стили для Desktop-first (экраны больше 768px) */
+/* Скрытие обоих навбаров по умолчанию */
+#navbar-desktop, #navbar-mobile {
+  display: none;
+}
+
+/* Медиа-запросы для отображения соответствующего навбара */
+@media (min-width: 768px) {
+  #navbar-desktop {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #navbar-mobile {
+    display: flex !important;
+  }
+}
+
+
+/* Медиа-запросы для экранов меньше 768px (мобильные устройства) */
+@media (max-width: 768px) {
+  /* Navbar занимает 100% ширины экрана */
+  .navbar {
+    width: 100%;
+  }
+
+  /* Контейнеры внутри navbar также занимают всю ширину */
+  .container-fluid {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* Лого и кнопка мобильного меню в одном ряду */
+  .navbar-brand {
+    order: 2;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Кнопка корзины справа */
+  .cart {
+    order: 3;
+  }
+
+  /* Поле поиска переносится вниз */
+  .container.mt-3 {
+    order: 4;
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* Кнопка мобильного меню слева */
+  .navbar-toggler {
+    order: 1;
+  }
+
+  /* Убираем текст с суммой в корзине на мобильных */
+  .cart div {
+    display: none;
+  }
+
+  /* Увеличиваем размер поля поиска на мобильных */
+  .form-control {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}

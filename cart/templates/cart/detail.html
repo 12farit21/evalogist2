@@ -1,0 +1,289 @@
+{% load static %}
+{% csrf_token %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ваша корзина покупок</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <style>
+    /* Убираем стрелочки в Chrome, Safari, Edge, Opera */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Убираем стрелочки в Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    #cart-detail-desktop, #cart-detail-mobile {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      #cart-detail-desktop {
+        display: flex !important;
+      }
+    }
+
+    @media (max-width: 767px) {
+      #cart-detail-mobile {
+        display: flex !important;
+      }
+      .container {
+        padding-bottom: 120px; /* Дополнительное пространство в конце страницы */
+      }
+    }
+
+  </style>
+  
+</head>
+<body>
+  
+  <div id = "cart-detail-desktop">
+        {% if cart|length == 0 %}
+      <div class="container d-flex flex-column justify-content-center align-items-center vh-100">
+        <div class="w-100 text-center" style="max-width: 60%;">
+            <h2 class="mb-4 text-secondary">В корзине нет товаров</h2>
+            <a href="{% url 'shop:product_list' %}" class="btn btn-light btn-lg">Перейти в каталог</a>
+        </div>
+      </div>
+    {% else %}
+      <div class="container my-5" style="max-width: 50%;">
+        <h1>Ваша корзина покупок</h1>
+        
+        <!-- Карточка корзины -->
+        <div class="cart-items">
+          {% for item in cart %}
+          {% with product=item.product %}
+            <div id="record" class="d-flex align-items-center justify-content-between shadow-sm p-3 mb-4 bg-white rounded">
+              <!-- Изображение товара -->
+              <a href="">
+                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="" style="width: 100px; height: 100px; object-fit: cover;">
+              </a>
+              
+              <!-- Описание товара -->
+              <div class="ms-3 flex-grow-1">
+                <a href="{{ product.get_absolute_url }}" class="mb-1 fw-semibold fs-3 text-dark text-decoration-none hover-link" 
+                id="itemcss" data-bs-toggle="offcanvas" data-bs-target="#itemOffcanvas{{ item.id }}">
+                  {{ product.name }}
+                </a>
+              </div>
+              
+              <!-- Цена товара (в центре) -->
+              <div class="d-flex flex-column align-items-center justify-content-center mx-3" style="min-width: 100px;">
+                <p class="text-muted mb-0 fs-3">{{ item.price |price_format}} ₸/шт</p>
+                <p class="text-muted mb-0 fs-6">{{ item.total_price |price_format}} ₸енге</p>
+              </div>
+            
+              <!-- Форма для изменения количества товара и добавления в корзину -->
+              <form id="add-to-cart-form-{{ item.id }}" action="{% url 'cart:cart_add' product.id %}" method="post" class="d-flex align-items-center">
+                {% csrf_token %}
+            
+                <button class="btn btn-outline-secondary" type="button" id="decrement-button-{{ item.id }}">-</button>
+                <input type="number" id="quantity-input-{{ item.id }}" name="quantity" value="{{ item.quantity }}" class="form-control text-center" style="width: 80px;">
+                <button class="btn btn-primary" type="button" id="increment-button-{{ item.id }}">+</button>
+              
+                <!-- Скрытое поле для отправки формы -->
+                <input type="hidden" name="override_quantity" value="True">
+            
+                <!-- Кнопка для обновления количества товара -->
+                <button type="submit" class="btn btn-secondary mx-2 update-btn">Обновить</button>
+
+              </form>
+              
+              <!-- Кнопка удаления товара -->
+              <form action="{% url 'cart:cart_remove' product.id %}" method="post" class="ms-3">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-lg">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+              
+            </div>
+          {% endwith %}
+          {% endfor %}
+        </div>
+        
+        <!-- Фиксированный блок с общей суммой и кнопками -->
+        <div class="fixed-summary position-fixed" id="summary-block" style="right: 20px; top: 20%; background-color: #f8f9fa; padding: 20px; border-radius: 10px; width: 300px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+          <h4 class="text-dark mb-4">Общая сумма: <br><strong>{{ cart.get_total_price |price_format}}₸</strong></h4>
+          <a href="{% url 'orders:order_create' %}" class="btn btn-primary w-100 mb-3">Оформить заказ</a>
+          <a href="{% url 'shop:product_list' %}" class="btn btn-outline-secondary w-100">Продолжить покупки</a>
+        </div>
+
+
+
+      </div>
+    {% endif %}
+  </div>
+
+
+  <div id = "cart-detail-mobile">
+      
+      {% if cart|length == 0 %}
+      <div class="container d-flex flex-column justify-content-center align-items-center vh-100">
+        <div class="w-100 text-center" style="max-width: 80%;">
+            <h2 class="mb-4 text-secondary">В корзине нет товаров</h2>
+            <a href="{% url 'shop:product_list' %}" class="btn btn-light btn-lg w-100">Перейти в каталог</a>
+        </div>
+      </div>
+    {% else %}
+      <div class="container my-5" style="max-width: 95%;">
+        <h1 class="text-center mb-4">Ваша корзина покупок</h1>
+        
+        <!-- Карточка корзины -->
+        <div class="cart-items">
+          {% for item in cart %}
+          {% with product=item.product %}
+            <div id="record" class="d-flex align-items-center justify-content-between shadow-sm p-3 mb-4 bg-white rounded flex-column">
+              <!-- Изображение товара -->
+              <a href="">
+                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="" style="width: 100%; height: auto; max-width: 120px; object-fit: cover;">
+              </a>
+              
+              <!-- Описание товара -->
+              <div class="mt-3 w-100 text-center">
+                <a href="{{ product.get_absolute_url }}" class="mb-1 fw-semibold fs-5 text-dark text-decoration-none hover-link">
+                  {{ product.name }}
+                </a>
+              </div>
+              
+              <!-- Цена товара -->
+              <div class="d-flex flex-column align-items-center justify-content-center mt-3">
+                <p class="text-muted mb-0 fs-5">{{ item.price |price_format}} ₸/шт</p>
+                <p class="text-muted mb-0 fs-6">{{ item.total_price |price_format}} ₸</p>
+              </div>
+            
+              <!-- Форма для изменения количества товара -->                                                                
+              <form id="add-to-cart-form-{{ item.id }}" action="{% url 'cart:cart_add' product.id %}" method="post" class="d-flex flex-column align-items-center justify-content-center mt-3 w-100">
+                {% csrf_token %}
+                <div class="d-flex align-items-center justify-content-center w-100">
+                  <button class="btn btn-outline-secondary" type="button" id="decrement-button-{{ item.id }}">-</button>
+                  <input type="number" id="quantity-input-{{ item.id }}" name="quantity" value="{{ item.quantity }}" class="form-control text-center mx-2" style="width: 90px;">
+                  <button class="btn btn-primary" type="button" id="increment-button-{{ item.id }}">+</button>
+                </div>
+
+                <!-- Скрытое поле для отправки формы -->
+                <input type="hidden" name="override_quantity" value="True">
+
+                <!-- Кнопка для обновления количества товара -->
+                <button type="submit" class="btn btn-secondary mt-2 update-btn">Обновить</button>
+              </form>
+              
+              <!-- Кнопка удаления товара -->
+              <form action="{% url 'cart:cart_remove' product.id %}" method="post" class="mt-3">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-lg btn-danger">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+              
+            </div>
+          {% endwith %}
+          {% endfor %}
+        </div>
+        
+        <!-- Фиксированный блок с общей суммой и кнопками для мобильных -->
+        <div class="fixed-summary position-fixed bottom-0 start-0 end-0 p-3" style="background-color: #f8f9fa; border-top: 1px solid #e9ecef; box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);">
+          <div class="d-flex flex-column align-items-center">
+            <h4 class="text-dark mb-4">Общая сумма:<br> <strong>{{ cart.get_total_price |price_format}}₸</strong></h4>
+            <a href="{% url 'orders:order_create' %}" class="btn btn-primary w-100 mb-3">Оформить заказ</a>
+            <a href="{% url 'shop:product_list' %}" class="btn btn-outline-secondary w-100">Продолжить покупки</a>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Loop through each cart item and set event listeners for increment and decrement buttons
+    const cartItems = document.querySelectorAll("[id^='record']");
+
+    cartItems.forEach(function(cartItem) {
+        const itemId = cartItem.querySelector("form").id.split("-").pop();
+
+        const incrementButton = cartItem.querySelector(`#increment-button-${itemId}`);
+        const decrementButton = cartItem.querySelector(`#decrement-button-${itemId}`);
+        const quantityInput = cartItem.querySelector(`#quantity-input-${itemId}`);
+
+        // Event listener for the increment button
+        incrementButton.addEventListener('click', function() {
+            let currentQuantity = parseInt(quantityInput.value);
+            quantityInput.value = currentQuantity + 1;
+            updateCart(itemId, quantityInput.value);
+        });
+
+        // Event listener for the decrement button
+        decrementButton.addEventListener('click', function() {
+            let currentQuantity = parseInt(quantityInput.value);
+            if (currentQuantity > 1) {
+                quantityInput.value = currentQuantity - 1;
+                updateCart(itemId, quantityInput.value);
+            }
+        });
+
+        // Handle direct quantity input change
+        quantityInput.addEventListener("input", function() {
+            let currentQuantity = parseInt(quantityInput.value);
+            if (currentQuantity < 1) {
+                quantityInput.value = 1;  // Prevents going below 1
+            }
+            updateCart(itemId, quantityInput.value);
+        });
+
+        // Function to update the cart using AJAX
+        function updateCart(productId, quantity) {
+            const form = cartItem.querySelector(`form`);
+            const formData = new FormData();
+            formData.append("quantity", quantity);  // Передаем текущее количество
+            formData.append("override_quantity", "True");  // Перезаписываем количество
+            formData.append("csrfmiddlewaretoken", form.querySelector("[name=csrfmiddlewaretoken]").value);
+
+            const actionUrl = form.action;
+
+            fetch(actionUrl, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"  // Указываем, что это AJAX-запрос
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Обновляем количество товаров и общую стоимость в корзине
+                    document.querySelector("#cart-total-items").innerText = data.cart_total_items;
+                    document.querySelector("#cart-total-price").innerText = data.cart_total_price;
+                } else {
+                    alert("Ошибка при обновлении корзины.");
+                }
+            })
+            .catch(error => {
+                console.error("Ошибка при отправке данных:", error);
+            });
+        }
+    });
+});
+</script>
+<!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

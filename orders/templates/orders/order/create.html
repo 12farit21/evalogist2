@@ -1,0 +1,81 @@
+{% extends "shop/base.html" %}
+{% load form_tags %}
+{% csrf_token %}
+
+{% block title %}
+  Оформление заказа
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+          <h3 class="mb-0">Оформление заказа</h3>
+        </div>
+        <div class="card-body">
+          <form method="post" class="order-form">
+            {% csrf_token %}
+            <div class="mb-3">
+              {{ form.full_name.label_tag }}
+              {{ form.full_name|add_class:"form-control" }}
+            </div>
+            <div class="mb-3">
+              {{ form.company_name.label_tag }}
+              {{ form.company_name|add_class:"form-control" }}
+            </div>
+            <div class="mb-3">
+              {{ form.email.label_tag }}
+              {{ form.email|add_class:"form-control" }}
+            </div>
+            <div class="mb-3">
+              {{ form.phone.label_tag }}
+              {{ form.phone|add_class:"form-control" }}
+            </div>
+            <div class="mb-3">
+              {{ form.address.label_tag }}
+              {{ form.address|add_class:"form-control" }}
+            </div>
+            <div class="mb-3">
+              {{ form.postal_code.label_tag }}
+              {{ form.postal_code|add_class:"form-control" }}
+            </div>
+            <div class="mb-3">
+              {{ form.city.label_tag }}
+              {{ form.city|add_class:"form-control" }}
+            </div>
+            <div class="text-end">
+              <button type="submit" class="btn btn-success">Оформить заказ</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">Ваш заказ</h3>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            {% for item in cart %}
+            <li class="list-group-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="badge bg-secondary me-2">{{ item.quantity }} шт.</span>
+                  <span class="fw-bold">{{ item.product.name }}</span>
+                </div>
+                <span class="text-success fw-bold">{{ item.total_price }} ₸</span>
+              </div>
+            </li>            
+            {% endfor %}
+          </ul>
+          <div class="mt-3">
+            <h5 class="text-end">Сумма: <span class="fw-bold">{{ cart.get_total_price }} ₸</span></h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

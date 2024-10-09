@@ -1,0 +1,24 @@
+{% extends "shop/base.html" %}
+{% csrf_token %}
+
+{% block title %}
+  Спасибо за заказ
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow-lg border-0">
+          <div class="card-body text-center p-5">
+            <h1 class="display-4 text-success mb-4">Спасибо за оформление заказа!</h1>
+            <p class="lead">Ваш заказ был успешно оформлен.</p>
+            <p>Номер вашего заказа: <strong class="text-primary">{{ order.id }}</strong>.</p>
+            <a href="{% url "shop:product_list" %}" class="btn btn-outline-success mt-4">Вернуться на главную</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
