@@ -10,6 +10,7 @@ colorama==0.4.6
 diff-match-patch==20230430
 Django==5.0.9
 django-endless-pagination-angular==1.2
+django-environ==0.11.2
 django-import-export==4.1.1
 django-js-asset==2.2.0
 django-mptt==0.16.0
@@ -23,6 +24,7 @@ kombu==5.4.2
 pillow==10.3.0
 prometheus_client==0.21.0
 prompt_toolkit==3.0.48
+psycopg2==2.9.9
 python-dateutil==2.9.0.post0
 python-monkey-business==1.1.0
 pytz==2024.2

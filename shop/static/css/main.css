@@ -287,4 +287,34 @@
     width: 100%;
     margin-bottom: 10px;
   }
+
+}
+
+
+
+
+
+.marquee-container {
+  width: 81%;
+  height: 100px;
+  overflow: hidden;
+  position: relative;
+  background-color: #f8f9fa; /* светлый фон */
+  border: 1px solid #dee2e6;
+}
+
+.marquee-text {
+  display: inline-block;
+  white-space: nowrap;
+  position: absolute;
+  animation: marquee 10s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    left: 100%;
+  }
+  100% {
+    left: -100%;
+  }
 }

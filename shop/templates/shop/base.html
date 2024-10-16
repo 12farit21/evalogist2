@@ -13,20 +13,73 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  
+  <style>
+    /* Стили для бегущей строки */
+    .marquee-container {
+      width: 85%; /* На всю ширину экрана */
+      height: 50px;
+      overflow: hidden;
+      background-color: #f8f9fa;
+      position: absolute;
+      top: 60px; /* Иконка будет ровно на 150px ниже логотипа */
+      left: 15px;
+    }
 
+    .marquee-text {
+      display: inline-block;
+      white-space: nowrap;
+      position: absolute;
+      animation: marquee 10s linear infinite;
+    }
 
+    /* Анимация для движения слева направо */
+    @keyframes marquee {
+      0% {
+        left: -100%; /* Текст начинает за пределами слева */
+      }
+      100% {
+        left: 100%; /* Двигается за пределы справа */
+      }
+    }
+
+    
+    .logo-container {
+      position: relative;
+    }
+    
+    .whatsapp-image {
+      position: absolute;
+      top: 60px; /* Иконка будет ровно на 150px ниже логотипа */
+      left: 15px;
+    }
+    
+    
+
+  </style>
   {% block links %}
   {% endblock links %}
   
 </head>
 <body>
+
+
+
+
   <!-- Навигационное меню для Desktop-->
   <nav id="navbar-desktop" class="navbar navbar-expand-lg navbar-light bg-light shadow-sm py-3">
     <div class="container">
       <!-- Лого -->
-      <a class="navbar-brand" href="#">
-        <img src="https://via.placeholder.com/50" alt="Лого" width="50" height="50" class="d-inline-block align-text-top img-fluid">
-      </a>
+      <div class="logo-container">
+        <a class="navbar-brand" href="/">
+          <img src="{% static 'img/logo.jpeg' %}" alt="Лого" width="80" height="80" class="d-inline-block align-text-top img-fluid">
+        </a>
+        <!-- Дополнительная картинка под логотипом -->
+        <a href="https://wa.me/77781381976?text=Здравствуйте!%0AПишу%20вам%20с%20сайта%20iska.kz">
+          <img src="{% static 'img/whatsapp.png' %}" alt="Ватсап" width="50" height="50" class="img-fluid whatsapp-image">
+        </a>
+      </div>
+      
 
       <!-- Весь контент навбара -->
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -45,12 +98,18 @@
       </div>
       
 
+        <div class="container mt-4 search-form logo-container" >
+          <!-- Поле поиска -->
+          <form class="d-flex flex-grow-1 me-3" method="get" action="{% url 'shop:product_search' %}" style="margin-top: 17px;">
+            <input class="form-control me-2" type="search" name="q" placeholder="Поиск товаров..." aria-label="Search" style="min-width: 150px;">
+            <button class="btn btn-primary" type="submit">Поиск</button>
+          </form>
 
-        <!-- Поле поиска -->
-        <form class="d-flex flex-grow-1 me-3" method="get" action="{% url 'shop:product_search' %}" style="margin-top: 17px;">
-          <input class="form-control me-2" type="search" name="q" placeholder="Поиск товаров..." aria-label="Search" style="min-width: 150px;">
-          <button class="btn btn-primary" type="submit">Поиск</button>
-        </form>
+          <!-- Бегущая строка под навбаром -->
+          <div class="d-flex justify-content-center align-items-center marquee-container">
+            <span class="marquee-text">При заказе от 10 000 тг бесплатная доставка по Алматы</span>
+          </div> 
+        </div>
 
 
 
@@ -80,6 +139,7 @@
 
       </div>
     </div>
+    
   </nav>
 
 
@@ -90,57 +150,60 @@
   <!-- Навигационное меню для Mobile -->
   <nav id="navbar-mobile" class="navbar navbar-expand-lg navbar-light bg-light shadow-sm py-3">
     <div class="container-fluid d-flex align-items-center justify-content-between">
-
-      <!-- Мобильное меню -->
-
+      
       <!-- Кнопка "Каталог" с выпадающим списком -->
       <div class="dropdown me-3">
         <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
           Каталог
         </a>
-
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <!-- Ссылка для отображения всех товаров -->
           <li><a class="dropdown-item" href="{% url 'shop:product_list' %}">Все товары</a></li>
-          
-          <!-- Перебор всех категорий и создание ссылок -->
           {% for category in categories_objects %}
             <li><a class="dropdown-item" href="{% url 'shop:product_list_by_category' category.slug %}">{{ category.name }}</a></li>
           {% endfor %}
         </ul>
       </div>
-      
-
-
+  
       <!-- Лого -->
       <a class="navbar-brand" href="#">
-        <img src="https://via.placeholder.com/50" alt="Лого" width="50" height="50" class="img-fluid">
+        <img src="{% static 'img/logo.jpeg' %}" alt="Лого" width="80" height="80" class="img-fluid">
       </a>
-  
+      <a href="https://wa.me/77781381976?text=Здравствуйте!%0AПишу%20вам%20с%20сайта%20iska.kz" class="navbar-brand">
+        <img src="{% static 'img/whatsapp.png' %}" alt="Ватсап" width="50" height="50" class="img-fluid">
+      </a>
+      
       <!-- Кнопка корзины -->
       <div class="cart d-flex align-items-center position-relative">
         <a href="{% url 'cart:cart_detail' %}" class="btn btn-primary d-flex align-items-center position-relative" id="cart-link">
-            <i class="fas fa-shopping-cart fa-2x"></i>
-            <span id="cart-total-items-new" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                {% with total_items=cart|length %} {{ total_items }} {% endwith %}
-            </span>
+          <i class="fas fa-shopping-cart fa-2x"></i>
+          <span id="cart-total-items-new" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {% with total_items=cart|length %} {{ total_items }} {% endwith %}
+          </span>
         </a>
       </div>
-
+  
+      <!-- Поле поиска -->
+      <div class="container mt-3 search-form">
+        <form class="d-flex flex-grow-1 me-3" method="get" action="{% url 'shop:product_list' %}" style="margin-top: 17px;">
+          <input class="form-control me-2" type="search" name="q" placeholder="Поиск товаров..." aria-label="Search" style="min-width: 150px;">
+          <button class="btn btn-primary" type="submit">Поиск</button>
+        </form>
+      </div>
+  
 
   
-    <!-- Поле поиска -->
-    <div class="container mt-3 search-form" >
-      <form class="d-flex flex-grow-1 me-3" method="get" action="{% url 'shop:product_list' %}" style="margin-top: 17px;">
-        <input class="form-control me-2" type="search" name="q" placeholder="Поиск товаров..." aria-label="Search" style="min-width: 150px;">
-        <button class="btn btn-primary" type="submit">Поиск</button>
-      </form>
     </div>
-  
-
+    <div style="width: 80%; margin: 0 auto; display: flex; justify-content: center;">
+      <p class="text-center" style="word-wrap: break-word; max-width: 100%;">
+        При заказе от 10 000 тг бесплатная доставка по Алматы
+      </p>
+    </div>
     
   </nav>
+
   
+
+
   {% block content %}
   {% endblock content %}
 <!-- Bootstrap JS -->

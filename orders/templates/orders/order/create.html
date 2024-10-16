@@ -1,81 +1,136 @@
-{% extends "shop/base.html" %}
 {% load form_tags %}
 {% csrf_token %}
+{% load custom_filters %}
+{% load static %}
+{% csrf_token %}
 
-{% block title %}
-  Оформление заказа
-{% endblock %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block tittle %}{% endblock tittle %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  
 
-{% block content %}
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-8">
-      <div class="card mb-4">
-        <div class="card-header bg-success text-white">
-          <h3 class="mb-0">Оформление заказа</h3>
-        </div>
-        <div class="card-body">
-          <form method="post" class="order-form">
-            {% csrf_token %}
-            <div class="mb-3">
-              {{ form.full_name.label_tag }}
-              {{ form.full_name|add_class:"form-control" }}
-            </div>
-            <div class="mb-3">
-              {{ form.company_name.label_tag }}
-              {{ form.company_name|add_class:"form-control" }}
-            </div>
-            <div class="mb-3">
-              {{ form.email.label_tag }}
-              {{ form.email|add_class:"form-control" }}
-            </div>
-            <div class="mb-3">
-              {{ form.phone.label_tag }}
-              {{ form.phone|add_class:"form-control" }}
-            </div>
-            <div class="mb-3">
-              {{ form.address.label_tag }}
-              {{ form.address|add_class:"form-control" }}
-            </div>
-            <div class="mb-3">
-              {{ form.postal_code.label_tag }}
-              {{ form.postal_code|add_class:"form-control" }}
-            </div>
-            <div class="mb-3">
-              {{ form.city.label_tag }}
-              {{ form.city|add_class:"form-control" }}
-            </div>
-            <div class="text-end">
-              <button type="submit" class="btn btn-success">Оформить заказ</button>
-            </div>
-          </form>
+
+  
+</head>
+<body>
+
+  <nav  class="navbar navbar-expand-lg navbar-light bg-light shadow-sm py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+      
+      <!-- Логотип -->
+      <div class="d-flex align-items-center">
+        <a class="navbar-brand me-3" href="/">
+          <img src="{% static 'img/logo.jpeg' %}" alt="Лого" width="80" height="80" class="img-fluid">
+        </a>
+        
+        <!-- Текст под логотипом -->
+        <div>
+
         </div>
       </div>
+  
+      <!-- Иконка WhatsApp -->
+      <div class="d-none d-lg-block">
+        <a href="https://wa.me/77781381976?text=Здравствуйте!%0AПишу%20вам%20с%20сайта%20iska.kz" class="d-flex align-items-center">
+          <img src="{% static 'img/whatsapp.png' %}" alt="Ватсап" width="50" height="50" class="img-fluid me-2">
+          <span class="text-success fw-bold">Написать нам</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+  
 
-      <div class="card">
-        <div class="card-header bg-primary text-white">
-          <h3 class="mb-0">Ваш заказ</h3>
-        </div>
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            {% for item in cart %}
-            <li class="list-group-item">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <span class="badge bg-secondary me-2">{{ item.quantity }} шт.</span>
-                  <span class="fw-bold">{{ item.product.name }}</span>
-                </div>
-                <span class="text-success fw-bold">{{ item.total_price }} ₸</span>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-header bg-success text-white">
+            <h3 class="mb-0">Оформление заказа</h3>
+          </div>
+          <div class="card-body">
+            <form method="post" class="order-form">
+              {% csrf_token %}
+              <div class="mb-3">
+                {{ form.full_name.label_tag }}
+                {{ form.full_name|add_class:"form-control" }}
               </div>
-            </li>            
-            {% endfor %}
-          </ul>
-          <div class="mt-3">
-            <h5 class="text-end">Сумма: <span class="fw-bold">{{ cart.get_total_price }} ₸</span></h5>
+              <div class="mb-3">
+                {{ form.company_name.label_tag }}
+                {{ form.company_name|add_class:"form-control" }}
+              </div>
+              <div class="mb-3">
+                {{ form.email.label_tag }}
+                {{ form.email|add_class:"form-control" }}
+              </div>
+              <div class="mb-3">
+                {{ form.phone.label_tag }}
+                {{ form.phone|add_class:"form-control" }}
+              </div>
+              <div class="mb-3">
+                {{ form.address.label_tag }}
+                {{ form.address|add_class:"form-control" }}
+              </div>
+              <div class="mb-3">
+                {{ form.postal_code.label_tag }}
+                {{ form.postal_code|add_class:"form-control" }}
+              </div>
+              <div class="mb-3">
+                {{ form.city.label_tag }}
+                {{ form.city|add_class:"form-control" }}
+              </div>
+              <div class="text-end">
+                <button type="submit" class="btn btn-success">Оформить заказ</button>
+              </div>
+            </form>
+          </div>
+        </div>
+  
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Ваш заказ</h3>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              {% for item in cart %}
+              <li class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <span class="badge bg-secondary me-2">{{ item.quantity }} шт.</span>
+                    <span class="fw-bold">{{ item.product.name }}</span>
+                  </div>
+                  <span class="text-success fw-bold">{{ item.total_price }} ₸</span>
+                </div>
+              </li>            
+              {% endfor %}
+            </ul>
+            <div class="mt-3">
+              <h5 class="text-end">Сумма: <span class="fw-bold">{{ cart.get_total_price }} ₸</span></h5>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-{% endblock %}
+<!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+  
+
+  {% comment %} <script src="{% static 'endless-pagination/js/module.endless.js' %}"></script>
+  <script src="{% static 'endless-pagination/js/endless-pagination.js' %}"></script> {% endcomment %}
+
+</body>
+</html>

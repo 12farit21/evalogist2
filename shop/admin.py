@@ -7,7 +7,7 @@ from multiupload.fields import MultiFileField
 from django_mptt_admin.admin import DjangoMpttAdmin
 from mptt.admin import MPTTModelAdmin
 
-class ItemImageInline(nested_admin.NestedTabularInline):
+class ItemImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
     exclude = ['order']
@@ -18,7 +18,7 @@ class ItemImageInline(nested_admin.NestedTabularInline):
 class ItemAdminForm(forms.ModelForm):
     additional_images = MultiFileField(
         min_num=1, 
-        max_num=3, 
+        max_num=5, 
         required=False,
         label="Дополнительные фото"
     )
@@ -39,13 +39,16 @@ class ItemAdminForm(forms.ModelForm):
     )
 
     def save(self, commit=True):
-        save = super().save(commit)
-        if self.cleaned_data.get("additional_images"):
+        # Save the product object first
+        product = super().save(commit=commit)
+        
+        # Now save any additional images
+        if commit and self.cleaned_data.get("additional_images"):
             for image in self.cleaned_data["additional_images"]:
-                saved_image = ProductImage(product=save, image=image)
-                saved_image.save()
-        return save
+                saved_image = ProductImage(product=product, image=image)
+                saved_image.save()  # Make sure product is already saved
 
+        return product
 
 class ItemInline(nested_admin.NestedTabularInline):
     model = Product
@@ -66,19 +69,23 @@ class CategoryAdmin(MPTTModelAdmin, nested_admin.NestedModelAdmin, ImportExportM
     list_filter = ['parent']
 
 class SpamForm(forms.ModelForm):
-    additional_images = MultiFileField(label='Дополнительные фото', min_num=1, max_num=3, required=False)
+    #additional_images = MultiFileField(label='Дополнительные фото', min_num=1, max_num=5, required=False)
 
     class Meta:
         model = Product
         fields = "__all__"
 
     def save(self, commit=True):
-        save = super().save(commit)
-        if self.cleaned_data.get("additional_images"):
+        # Save the product object first
+        product = super().save(commit=commit)
+        
+        # Now save any additional images
+        if commit and self.cleaned_data.get("additional_images"):
             for image in self.cleaned_data["additional_images"]:
-                saved_image = ProductImage(product=save, image=image)
-                saved_image.save()
-        return save
+                saved_image = ProductImage(product=product, image=image)
+                saved_image.save()  # Make sure product is already saved
+        
+        return product
     
 
 class ImageAdmin(admin.StackedInline):

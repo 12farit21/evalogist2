@@ -59,7 +59,7 @@ def product_list(request, category_slug=None):
 
 
 # Пагинация по категориям
-    paginator = Paginator(categories, 1)  # Пагинация по 3 категории на страницу
+    paginator = Paginator(categories, 3)  # Пагинация по 3 категории на страницу
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
 

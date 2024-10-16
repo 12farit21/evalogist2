@@ -169,11 +169,9 @@
 </div>
 
 <div id="category-container">
-  {% for category_name, products in category_items.items %}
-    <div id="product-container-{{ category_name }}">
-      {% include 'shop/product/test.html' with products=products %}
-    </div>
-  {% endfor %}
+  <div id="product-container-{{ category_name }}">
+    {% include 'shop/product/test.html' with products=products %}
+  </div>
 </div>
 
 <div class="load-more-container text-center my-5">

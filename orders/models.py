@@ -13,9 +13,9 @@ class Order(models.Model):
     address = models.CharField('Адрес',max_length=250)
     postal_code = models.CharField('Почтовый индекс',max_length=20)
     city = models.CharField('Город',max_length=100)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    paid = models.BooleanField(default=False)
+    created = models.DateTimeField('Создано',auto_now_add=True)
+    updated = models.DateTimeField('Изменено',auto_now=True)
+    paid = models.BooleanField('Оплачено',default=False)
 
     class Meta:
         ordering = ['-created']
@@ -38,18 +38,28 @@ class OrderItem(models.Model):
     order = models.ForeignKey(
         Order,
         related_name='items',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name='Заказ'
     )
     product = models.ForeignKey(
         'shop.Product',
         related_name='order_items',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name='Товар'  
     )
     price = models.DecimalField(
         max_digits=10,
-        decimal_places=2
+        decimal_places=2,
+        verbose_name='Цена'
     )
-    quantity = models.PositiveIntegerField(default=1)
+    quantity = models.PositiveIntegerField(
+        default=1,
+        verbose_name='Количество'
+    )
+
+    class Meta:
+        verbose_name = 'Позиция заказа'
+        verbose_name_plural = 'Позиции заказа'
 
     def __str__(self):
         return str(self.id)
