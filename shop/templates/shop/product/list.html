@@ -166,6 +166,14 @@
 
 
 
+  .responsive-text {
+    font-size: clamp(1.5rem, 5vw, 2rem); /* Текст адаптируется к ширине экрана */
+    width: 100%; /* Обеспечивает заполнение ширины */
+    word-wrap: break-word; /* Перенос слов при необходимости */
+}
+.text-container {
+  max-width: 100%; /* Ограничивает ширину контейнера */
+}
   
 </style>
 
@@ -342,10 +350,7 @@ function initializeCartEvents() {
                 }
             });
         });
-<<<<<<< HEAD
-=======
 
->>>>>>> 1e04cd6 (ubuntu)
 }
 
 // Function to update the quantity inputs for new products based on cart data

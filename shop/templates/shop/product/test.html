@@ -4,14 +4,16 @@
 {% load cart_extras %}
  {% for category_name, products in category_items.items %}
     <div class="container my-5">
-        <h2 class="fw-bold text-start">{{ category_name }}</h2>
+        <div class='text-container'>
+            <h2 class="fw-bold text-start responsive-text">{{ category_name }}</h2>
+        </div>
 
         <div class="category-products">
             {% for item in products %}
                 <div class="product">
                     <div id="record" class="d-flex align-items-center justify-content-between shadow-sm p-3 mb-4 bg-white rounded">
                         <!-- Изображение товара -->
-                        <img src="{{ item.image.url }}" alt="" style="width: 100px; height: 100px; object-fit: cover;">
+                        <img src="{{ item.image.url }}" alt="" style="width: 100px; height: 100px; object-fit: cover;" data-bs-toggle="offcanvas" data-bs-target="#itemOffcanvas{{ item.id }}">
                     
                         <!-- Описание товара -->
                         <div class="ms-3 flex-grow-1">
@@ -142,108 +144,3 @@
 
 
 
-
-
-{% comment %} document.addEventListener("DOMContentLoaded", function() {
-    const forms = document.querySelectorAll("form[id^='add-to-cart-form']");
-
-    forms.forEach(function(form) {
-        const itemId = form.id.split("-").pop();
-        const quantityInput = document.querySelector(`#quantity-input-${itemId}`);
-        const decreaseButton = document.querySelector(`#decrease-quantity-${itemId}`);
-        const increaseButton = document.querySelector(`#increase-quantity-${itemId}`);
-        const totalPriceElement = document.querySelector(`#total-price-${itemId}`);
-        const itemPrice = parseFloat(totalPriceElement.innerText); // Цена товара
-        
-        updateTotalPrice(itemId, parseInt(quantityInput.value), itemPrice);
-
-        decreaseButton.addEventListener("click", function() {
-            let currentQuantity = parseInt(quantityInput.value);
-            if (currentQuantity > 0) {
-                currentQuantity -= 1;
-                quantityInput.value = currentQuantity;
-                updateCart(itemId, currentQuantity);
-                updateTotalPrice(itemId, currentQuantity, itemPrice);
-            }
-        });
-
-        increaseButton.addEventListener("click", function() {
-            let currentQuantity = parseInt(quantityInput.value);
-            currentQuantity += 1;
-            quantityInput.value = currentQuantity;
-            updateCart(itemId, currentQuantity);
-            updateTotalPrice(itemId, currentQuantity, itemPrice);
-        });
-
-        quantityInput.addEventListener("input", function() {
-            let currentQuantity = parseInt(quantityInput.value);
-            if (currentQuantity < 0) {
-                quantityInput.value = 0;
-                currentQuantity = 0;
-            }
-            updateCart(itemId, currentQuantity);
-            updateTotalPrice(itemId, currentQuantity, itemPrice);
-        });
-
-        function updateCart(productId, quantity) {
-            const formData = new FormData();
-            formData.append("quantity", quantity);
-            formData.append("override_quantity", "True");
-            formData.append("csrfmiddlewaretoken", form.querySelector("[name=csrfmiddlewaretoken]").value);
-        
-            const actionUrl = form.action;
-        
-            fetch(actionUrl, {
-                method: "POST",
-                body: formData,
-                headers: {
-                    "X-Requested-With": "XMLHttpRequest"
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const cartTotalItems = document.querySelector("#cart-total-items");
-                    const cartTotalPrice = document.querySelector("#cart-total-price");
-                    const cartTotalItemsNew = document.querySelector("#cart-total-items-new"); // Новый элемент
-                    
-                    if (cartTotalItems) {
-                        cartTotalItems.innerText = data.cart_total_items;
-                    }
-                    if (cartTotalPrice) {
-                        cartTotalPrice.innerText = data.cart_total_price;
-                    }
-                    if (cartTotalItemsNew) {
-                        cartTotalItemsNew.innerText = data.cart_total_items; // Обновление для нового элемента
-                    }
-                } else {
-                    alert("Ошибка при обновлении корзины.");
-                }
-            })
-            .catch(error => {
-                console.error("Ошибка при отправке данных:", error);
-            });
-        }
-
-        function updateTotalPrice(productId, quantity, price) {
-            const totalPriceElement = document.querySelector(`#total-price-${productId}`);
-            const totalPrice = quantity * price;
-            if (totalPrice.toFixed(2) === "0.00") {
-                totalPriceElement.innerText = "";
-            } else {
-                totalPriceElement.innerText = totalPrice.toFixed(2) + " ₸";
-            }
-        }
-    });
-
-    var offcanvasElements = document.querySelectorAll('.offcanvas');
-    offcanvasElements.forEach(function (offcanvas) {
-        offcanvas.addEventListener('hide.bs.offcanvas', function () {
-            var video = offcanvas.querySelector('video');
-            if (video) {
-                video.pause(); 
-                video.currentTime = 0; 
-            }
-        });
-    });
-});  {% endcomment %}
