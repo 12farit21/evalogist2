@@ -71,7 +71,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=200,unique=True, blank=True)
     image = models.ImageField('Главное фото',
         upload_to='products/%Y/%m/%d',
-        blank=True
+
     )
     video = models.FileField("Видео", upload_to='item_videos/', blank=True, null=True, validators=[validate_file_size])
     description = models.TextField('Описание',blank=True)
