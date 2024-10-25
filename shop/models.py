@@ -70,13 +70,7 @@ class Product(models.Model):
     name = models.CharField('Название',max_length=200)
     slug = models.SlugField(max_length=200,unique=True, blank=True)
     image = models.ImageField('Главное фото',
-        upload_to='products/%Y/%m/%d',
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> 1e04cd6 (ubuntu)
-    )
+        upload_to='products/%Y/%m/%d',)
     video = models.FileField("Видео", upload_to='item_videos/', blank=True, null=True, validators=[validate_file_size])
     description = models.TextField('Описание',blank=True)
     price = models.DecimalField('Цена',max_digits=10, decimal_places=2)
