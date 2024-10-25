@@ -31,7 +31,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = True
 
 
-ALLOWED_HOSTS = [ '*']
+ALLOWED_HOSTS = [ 'iska.kz']
 
 
 
@@ -148,9 +148,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # Change to an appropriate directory
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # путь к папке, где лежат ваши статические файлы во время разработки
-]
+
 # When in production, collect static files
 
 
@@ -180,3 +178,21 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 SESSION_COOKIE_AGE = 86400
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'django_error.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
