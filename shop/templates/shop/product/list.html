@@ -214,41 +214,41 @@
 
 <script>
 
-  let zoomLevel = 1;
-  let initialDistance = 0;
+ // Функция для инициализации событий модальных окон
+function initializeModalEvents() {
+  const modalImages = document.querySelectorAll('[id^="modalImage"]');
+  modalImages.forEach(function(modalImage) {
+    const itemId = modalImage.id.replace('modalImage', '');
+    modalImage.addEventListener('click', function() {
+      openImageModal(modalImage.src, itemId);
+    });
 
-  const modalImage = document.getElementById('modalImage');
+    if (modalImage) {
+      modalImage.addEventListener('touchstart', function(event) {
+        if (event.touches.length === 2) {
+          initialDistance = getDistance(event.touches[0], event.touches[1]);
+        }
+      });
 
-  // Обработчик для жеста "щипок"
-  modalImage.addEventListener('touchstart', function(event) {
-    if (event.touches.length === 2) {
-      initialDistance = getDistance(event.touches[0], event.touches[1]);
+      modalImage.addEventListener('touchmove', function(event) {
+        if (event.touches.length === 2) {
+          const currentDistance = getDistance(event.touches[0], event.touches[1]);
+          const scaleChange = currentDistance / initialDistance;
+          zoomLevel = Math.max(1, zoomLevel * scaleChange);
+          modalImage.style.transform = `scale(${zoomLevel})`;
+          initialDistance = currentDistance;
+          event.preventDefault(); // Предотвращает прокручивание страницы при зуме
+        }
+      });
+
+      modalImage.addEventListener('touchend', function(event) {
+        if (event.touches.length < 2) {
+          initialDistance = 0;
+        }
+      });
     }
   });
-
-  modalImage.addEventListener('touchmove', function(event) {
-    if (event.touches.length === 2) {
-      const currentDistance = getDistance(event.touches[0], event.touches[1]);
-      const scaleChange = currentDistance / initialDistance;
-      zoomLevel = Math.max(1, zoomLevel * scaleChange);
-      modalImage.style.transform = `scale(${zoomLevel})`;
-      initialDistance = currentDistance;
-      event.preventDefault(); // Предотвращает прокручивание страницы при зуме
-    }
-  });
-
-  modalImage.addEventListener('touchend', function(event) {
-    if (event.touches.length < 2) {
-      initialDistance = 0;
-    }
-  });
-
-  // Функция для расчёта расстояния между двумя точками
-  function getDistance(touch1, touch2) {
-    const dx = touch2.clientX - touch1.clientX;
-    const dy = touch2.clientY - touch1.clientY;
-    return Math.sqrt(dx * dx + dy * dy);
-  }
+}
 
   function openImageModal(imageUrl, itemId) {
     console.log(imageUrl);
