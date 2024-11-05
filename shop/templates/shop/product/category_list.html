@@ -8,149 +8,180 @@
 {% block links %}
 
 <style>
-    /* Скрытие стрелок для всех браузеров */
-    input[type="number"] {
-        -moz-appearance: textfield;
+  /* Скрытие стрелок для всех браузеров */
+  input[type="number"] {
+      -moz-appearance: textfield;
+  }
+  
+  /* Скрытие стрелок для Chrome, Safari и Opera */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
+  
+    /* Стандартные стили для всех экранов */
+    .container {
+      margin-bottom: 2rem;
     }
     
-    /* Скрытие стрелок для Chrome, Safari и Opera */
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    
-      /* Стандартные стили для всех экранов */
+    /* Адаптация для мобильных устройств (экраны до 576px) */
+    @media (max-width: 767px) {
+      /* Контейнер */
       .container {
-        margin-bottom: 2rem;
-      }
-      
-      /* Адаптация для мобильных устройств (экраны до 576px) */
-      @media (max-width: 767px) {
-        /* Контейнер */
-        .container {
-          padding: 1rem;
-        }
-    
-        /* Заголовки категорий */
-        h2 {
-          font-size: 1.5rem; /* Уменьшение размера текста */
-        }
-    
-        /* Стили для каждого товара */
-        #record {
-          flex-direction: column; /* Переводим flex-контейнер в вертикальный вид */
-          align-items: flex-start; /* Выравниваем элементы по началу */
-        }
-    
-        /* Изображение товара */
-        #record img {
-          width: 80px;
-          height: 80px;
-          margin-bottom: 10px; /* Добавляем отступ снизу */
-        }
-    
-        /* Название товара */
-        #record a {
-          font-size: 1.25rem; /* Уменьшение шрифта */
-        }
-    
-        /* Цена товара */
-        #record .d-flex {
-          flex-direction: row; /* Выравниваем по строке */
-          justify-content: space-between;
-          width: 100%;
-        }
-    
-        /* Поле ввода количества товара */
-        #record input {
-          width: 50px; /* Уменьшаем ширину поля */
-        }
-    
-        /* Кнопки добавления и удаления товара */
-        #record button {
-          padding: 0.25rem 0.5rem; /* Уменьшаем внутренние отступы кнопок */
-        }
-    
-        /* Карусель изображений */
-        .carousel .custom-img {
-          width: 100%; /* Увеличиваем изображение до ширины экрана */
-          height: auto;
-        }
-    
-        /* Описание товара */
-        .item-description {
-          font-size: 0.875rem; /* Уменьшаем размер текста */
-        }
-    
-        /* Цена товара внутри модального окна */
-        .item-price {
-          font-size: 1rem; /* Уменьшение размера цены */
-        }
-    
-        /* Модальное окно Offcanvas */
-        .offcanvas {
-          width: 100%; /* Растягиваем окно на всю ширину экрана */
-        }
-        /* Изменение ширины модального окна на мобильных устройствах */
-      .offcanvas {
-        width: 100%; /* Занимает 95% ширины экрана */
-        max-width: 95%; /* Ограничение максимальной ширины */
-        left: 2.5%; /* Центрирование по горизонтали */
-        right: auto;
+        padding: 1rem;
       }
   
-      /* Адаптация картинок в карусели */
-      .carousel .custom-img {
-        width: 100%; /* Изображения занимают всю ширину */
-        height: auto; /* Высота подстраивается автоматически */
-        object-fit: cover; /* Обрезаем, если пропорции не совпадают */
+      /* Заголовки категорий */
+      h2 {
+        font-size: 1.5rem; /* Уменьшение размера текста */
       }
   
-      /* Видео контейнер в модальном окне */
-      .video-container {
-        width: 100%; /* Видео занимает всю ширину модального окна */
-        height: auto; /* Высота определяется автоматически */
+      /* Стили для каждого товара */
+      #record {
+        flex-direction: column; /* Переводим flex-контейнер в вертикальный вид */
+        align-items: flex-start; /* Выравниваем элементы по началу */
       }
   
-      /* Видео должно занимать всю ширину контейнера */
-      .video-container video {
+      /* Изображение товара */
+      #record img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 10px; /* Добавляем отступ снизу */
+      }
+  
+      /* Название товара */
+      #record a {
+        font-size: 1.25rem; /* Уменьшение шрифта */
+      }
+  
+      /* Цена товара */
+      #record .d-flex {
+        flex-direction: row; /* Выравниваем по строке */
+        justify-content: space-between;
         width: 100%;
+      }
+  
+      /* Поле ввода количества товара */
+      #record input {
+        width: 50px; /* Уменьшаем ширину поля */
+      }
+  
+      /* Кнопки добавления и удаления товара */
+      #record button {
+        padding: 0.25rem 0.5rem; /* Уменьшаем внутренние отступы кнопок */
+      }
+  
+      /* Карусель изображений */
+      .carousel .custom-img {
+        width: 100%; /* Увеличиваем изображение до ширины экрана */
         height: auto;
-        object-fit: cover; /* Обеспечивает правильное масштабирование видео */
       }
   
-      /* Корректируем отступы и размеры заголовков и текста */
-      .offcanvas-title {
-        font-size: 1.25rem; /* Уменьшение заголовка на мобильных */
-      }
-  
-      .offcanvas-body {
-        padding: 1rem; /* Сужаем внутренние отступы для удобства на мобильных */
-      }
-  
+      /* Описание товара */
       .item-description {
-        font-size: 0.875rem; /* Уменьшаем размер описания товара */
+        font-size: 0.875rem; /* Уменьшаем размер текста */
       }
   
+      /* Цена товара внутри модального окна */
       .item-price {
-        font-size: 1rem; /* Уменьшаем размер цены */
+        font-size: 1rem; /* Уменьшение размера цены */
       }
   
-      /* Кнопки управления каруселью */
-      .carousel-control-prev, .carousel-control-next {
-        width: 30px; /* Уменьшение кнопок карусели */
-        height: 30px;
-        font-size: 1.25rem; /* Уменьшение размера иконок стрелок */
+      /* Модальное окно Offcanvas */
+      .offcanvas {
+        width: 100%; /* Растягиваем окно на всю ширину экрана */
       }
-  
-      .carousel-control-prev i, .carousel-control-next i {
-        font-size: 1.5rem; /* Размер иконок стрелок */
-      }
+      /* Изменение ширины модального окна на мобильных устройствах */
+    .offcanvas {
+      width: 100%; /* Занимает 95% ширины экрана */
+      max-width: 95%; /* Ограничение максимальной ширины */
+      left: 2.5%; /* Центрирование по горизонтали */
+      right: auto;
     }
-      
-  </style>
+
+    /* Адаптация картинок в карусели */
+    .carousel .custom-img {
+      width: 100%; /* Изображения занимают всю ширину */
+      height: auto; /* Высота подстраивается автоматически */
+      object-fit: cover; /* Обрезаем, если пропорции не совпадают */
+    }
+
+    /* Видео контейнер в модальном окне */
+    .video-container {
+      width: 100%; /* Видео занимает всю ширину модального окна */
+      height: auto; /* Высота определяется автоматически */
+    }
+
+    /* Видео должно занимать всю ширину контейнера */
+    .video-container video {
+      width: 100%;
+      height: auto;
+      object-fit: cover; /* Обеспечивает правильное масштабирование видео */
+    }
+
+    /* Корректируем отступы и размеры заголовков и текста */
+    .offcanvas-title {
+      font-size: 1.25rem; /* Уменьшение заголовка на мобильных */
+    }
+
+    .offcanvas-body {
+      padding: 1rem; /* Сужаем внутренние отступы для удобства на мобильных */
+    }
+
+    .item-description {
+      font-size: 0.875rem; /* Уменьшаем размер описания товара */
+    }
+
+    .item-price {
+      font-size: 1rem; /* Уменьшаем размер цены */
+    }
+
+    /* Кнопки управления каруселью */
+    .carousel-control-prev, .carousel-control-next {
+      width: 30px; /* Уменьшение кнопок карусели */
+      height: 30px;
+      font-size: 1.25rem; /* Уменьшение размера иконок стрелок */
+    }
+
+    .carousel-control-prev i, .carousel-control-next i {
+      font-size: 1.5rem; /* Размер иконок стрелок */
+    }
+  }
+
+
+  .carousel-item img {
+    height: 1500px; /* можно поменять под твои нужды */
+    object-fit: cover; /* для масштабирования изображения без искажения */
+  }
   
+
+
+
+
+
+
+
+
+
+
+
+
+  .responsive-text {
+    font-size: clamp(1.5rem, 5vw, 2rem); /* Текст адаптируется к ширине экрана */
+    width: 100%; /* Обеспечивает заполнение ширины */
+    word-wrap: break-word; /* Перенос слов при необходимости */
+}
+.text-container {
+  max-width: 100%; /* Ограничивает ширину контейнера */
+}
+  
+</style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 {% endblock links %}
 
 
@@ -177,69 +208,85 @@
                     </div>
 
                     <!-- Модальное окно Offcanvas -->
-                    <div class="offcanvas offcanvas-end custom-offcanvas" tabindex="-1" id="itemOffcanvas{{ item.id }}" aria-labelledby="offcanvasLabel{{ item.id }}">
-                        <div class="offcanvas-header">
-                            <h5 class="offcanvas-title" id="offcanvasLabel{{ item.id }}">{{ item.name }}</h5>
-                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-                        <div class="offcanvas-body">
-                            <!-- Карусель -->
-                            <div id="carouselExampleIndicators{{ item.id }}" class="carousel slide mb-4 custom-carousel">
-                                <!-- Индикаторы карусели -->
-                                <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#carouselExampleIndicators{{ item.id }}" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                    {% for image in item.images.all %}
-                                        <button type="button" data-bs-target="#carouselExampleIndicators{{ item.id }}" data-bs-slide-to="{{ forloop.counter }}" aria-label="Slide {{ forloop.counter|add:1 }}"></button>
-                                    {% endfor %}
-                                </div>
-                                <!-- Внутренние элементы карусели -->
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <img src="{{ item.image.url }}" class="d-block custom-img" alt="...">
-                                    </div>
-                                    {% for image in item.images.all %}
-                                        <div class="carousel-item">
-                                            <img src="{{ image.image.url }}" class="d-block custom-img" alt="...">
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                <!-- Кнопки управления каруселью -->
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators{{ item.id }}" data-bs-slide="prev">
-                                    <span class="custom-prev-icon" aria-hidden="true">
-                                        <i class="bi bi-arrow-left-circle-fill"></i> <!-- Иконка стрелки влево -->
-                                    </span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators{{ item.id }}" data-bs-slide="next">
-                                    <span class="custom-next-icon" aria-hidden="true">
-                                        <i class="bi bi-arrow-right-circle-fill"></i> <!-- Иконка стрелки вправо -->
-                                    </span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
+                    <div class="offcanvas offcanvas-end custom-offcanvas" tabindex="-1" id="itemOffcanvas{{ item.id }}" aria-labelledby="offcanvasLabel{{ item.id }}" >
+                      <div class="offcanvas-header">
+                          <h5 class="offcanvas-title" id="offcanvasLabel{{ item.id }}">{{ item.name }}</h5>
+                          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                      </div>
+                      <div class="offcanvas-body">
+                          <!-- Карусель -->
+                          <div id="carouselExampleIndicators{{ item.id }}" class="carousel slide mb-4 custom-carousel">
+                              <!-- Модальное окно -->
+                              <div class="modal fade viewer-container viewer-backdrop viewer-fixed viewer-fade viewer-transition" id="imageModal{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel{{ item.id }}" aria-modal="true" style="z-index: 2015; height: 70%;" data-bs-backdrop="false">
+                                  <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+                                      <div class="modal-content">
+                                          <div class='modal-header d-flex justify-content-between align-items-center'>
+                                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                          <div class="modal-body position-relative p-0 viewer-canvas" data-viewer-action="hide">
+                                              <img id="modalImage{{ item.id }}" src="" class="img-fluid viewer-transition" style="width: 100%; height: 100%; max-width: 100%; max-height: 100%; object-fit: contain; background-color: white;" alt="Full Image">
 
-                            </div>
-                            <!-- Видео -->
-                            {% if item.video %}
-                                <div class="video-container mb-4">
-                                    <video id="itemVideo" class="w-100" controls>
-                                        <source src="{{ item.video.url }}" type="video/mp4">
-                                        Your browser does not support the video tag.
-                                    </video>
-                                </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              
+                              <!-- Индикаторы карусели -->
+                              <div class="carousel-indicators">
+                                  <button type="button" data-bs-target="#carouselExampleIndicators{{ item.id }}" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                  {% for image in item.images.all %}
+                                      <button type="button" data-bs-target="#carouselExampleIndicators{{ item.id }}" data-bs-slide-to="{{ forloop.counter }}" aria-label="Slide {{ forloop.counter|add:1 }}"></button>
+                                  {% endfor %}
+                              </div>
+                              <!-- Внутренние элементы карусели -->
+                              <div class="carousel-inner">
+                                  <div class="carousel-item active">
+                                      <img src="{{ item.image.url }}" class="d-block custom-img w-100 h-50" alt="..." onclick="openImageModal('{{ item.image.url|escapejs }}', '{{ item.id }}')">
 
-                            {% endif %}
+                                  </div>
+                                  {% for image in item.images.all %}
+                                      <div class="carousel-item">
+                                          <img src="{{ image.image.url }}" class="d-block custom-img w-100 h-50" alt="..." onclick="openImageModal('{{ image.image.url|escapejs }}', '{{ item.id }}')">
+                                          
+                                      </div>
+                                  {% endfor %}
+                              </div>
+                              <!-- Кнопки управления каруселью -->
+                              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators{{ item.id }}" data-bs-slide="prev">
+                                  <span class="custom-prev-icon" aria-hidden="true">
+                                      <i class="bi bi-arrow-left-circle-fill"></i> <!-- Иконка стрелки влево -->
+                                  </span>
+                                  <span class="visually-hidden">Previous</span>
+                              </button>
+                              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators{{ item.id }}" data-bs-slide="next">
+                                  <span class="custom-next-icon" aria-hidden="true">
+                                      <i class="bi bi-arrow-right-circle-fill"></i> <!-- Иконка стрелки вправо -->
+                                  </span>
+                                  <span class="visually-hidden">Next</span>
+                              </button>
 
-                            <!-- Описание товара -->
-                            <div>
-                            <p class="item-description">{{ item.description | safe }}</p>
-                            </div>
-                            <p class="item-price">Цена: <span class="">{{ item.price |price_format}} ₸</span></p>
+                          </div>
+                          <!-- Видео -->
+                          {% if item.video %}
+                              <div class="video-container mb-4">
+                                  <video id="itemVideo" class="w-100" controls>
+                                      <source src="{{ item.video.url }}" type="video/mp4">
+                                      Your browser does not support the video tag.
+                                  </video>
+                              </div>
 
-                            <!-- Кнопка добавления -->
+                          {% endif %}
+                              
+                          <!-- Описание товара -->
+                          <div>
+                          <p class="item-description">{{ item.description | linebreaks }}</p>
+                          </div>
+                          <p class="item-price">Цена: <span class="">{{ item.price |price_format}} ₸</span></p>
 
-                        </div>
-                    </div>
-                    
+                          <!-- Кнопка добавления -->
+
+                      </div>
+                  </div>
                     <!-- Цена товара (в центре) -->
                     <div class="d-flex flex-column align-items-center justify-content-center mx-3" style="min-width: 100px;">
                     <p class="text-muted mb-0 fs-3">{{ item.price |price_format}} ₸/шт</p>
@@ -272,6 +319,53 @@
 
 
 <script>
+
+  let zoomLevel = 1;
+  let initialDistance = 0;
+
+  const modalImage = document.getElementById('modalImage');
+
+  // Обработчик для жеста "щипок"
+  modalImage.addEventListener('touchstart', function(event) {
+    if (event.touches.length === 2) {
+      initialDistance = getDistance(event.touches[0], event.touches[1]);
+    }
+  });
+
+  modalImage.addEventListener('touchmove', function(event) {
+    if (event.touches.length === 2) {
+      const currentDistance = getDistance(event.touches[0], event.touches[1]);
+      const scaleChange = currentDistance / initialDistance;
+      zoomLevel = Math.max(1, zoomLevel * scaleChange);
+      modalImage.style.transform = `scale(${zoomLevel})`;
+      initialDistance = currentDistance;
+      event.preventDefault(); // Предотвращает прокручивание страницы при зуме
+    }
+  });
+
+  modalImage.addEventListener('touchend', function(event) {
+    if (event.touches.length < 2) {
+      initialDistance = 0;
+    }
+  });
+
+  // Функция для расчёта расстояния между двумя точками
+  function getDistance(touch1, touch2) {
+    const dx = touch2.clientX - touch1.clientX;
+    const dy = touch2.clientY - touch1.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  function openImageModal(imageUrl, itemId) {
+
+    var modalImage = document.getElementById('modalImage' + itemId);
+    modalImage.src = imageUrl; // Устанавливаем изображение в модальном окне
+    var modal = new bootstrap.Modal(document.getElementById('imageModal' + itemId)); // Инициализируем уникальное модальное окно
+    modal.show(); // Показываем модальное окно
+  }
+  
+
+
   document.addEventListener('DOMContentLoaded', function() {
     const loadMoreBtn = document.getElementById('load-more');
     
