@@ -28,8 +28,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = Fasle
-
+DEBUG = False
 
 ALLOWED_HOSTS = [ 'iska.kz']
 
